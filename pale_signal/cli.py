@@ -241,11 +241,6 @@ For more information, visit: https://github.com/siddharth-narigra/pale-signal
     
     args = parser.parse_args()
     
-    # Show banner for help or when no command given
-    if not args.command or args.command in ['add', 'summary', 'plot']:
-        if not args.command:
-            show_banner()
-    
     if args.command == 'add':
         cmd_add()
     elif args.command == 'summary':
@@ -253,6 +248,7 @@ For more information, visit: https://github.com/siddharth-narigra/pale-signal
     elif args.command == 'plot':
         cmd_plot(args.metric)
     else:
+        # Show banner only when no command given
         show_banner()
         parser.print_help()
         sys.exit(1)
