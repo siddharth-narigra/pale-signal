@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: pale-signal
-Version: 1.0.1
+Version: 1.0.2
 Summary: A lightweight, local-first CLI tool for tracking and analyzing daily life signals
 License: MIT
 Requires-Python: >=3.8

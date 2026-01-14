@@ -18,7 +18,7 @@ from . import analytics
 from . import visualize
 
 
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 
 
 ASCII_BANNER = """
@@ -325,7 +325,7 @@ def main():
         print("")
         print("Metrics: sleep_hours, focus, mood, work_hours, social")
         print("")
-        print("Run 'pale-signal -h' for more options.")
+        #print("More info: https://github.com/siddharth-narigra/pale-signal")
         sys.exit(0)
 
 
