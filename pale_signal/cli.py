@@ -18,6 +18,9 @@ from . import analytics
 from . import visualize
 
 
+VERSION = "1.0.1"
+
+
 ASCII_BANNER = """
 ╔═══════════════════════════════════════════════════════════╗
 ║                                                           ║
@@ -34,9 +37,29 @@ ASCII_BANNER = """
 """
 
 
+def check_for_updates():
+    """Check PyPI for the latest version and notify if update available."""
+    try:
+        import urllib.request
+        import json
+        
+        url = "https://pypi.org/pypi/pale-signal/json"
+        with urllib.request.urlopen(url, timeout=2) as response:
+            data = json.loads(response.read().decode())
+            latest = data["info"]["version"]
+            
+            if latest != VERSION:
+                print(f"  Update available: {VERSION} → {latest}")
+                print(f"  Run: pip install --upgrade pale-signal\n")
+    except Exception:
+        # Silently fail if offline or any error
+        pass
+
+
 def show_banner():
-    """Display ASCII art banner."""
+    """Display ASCII art banner and check for updates."""
     print(ASCII_BANNER)
+    check_for_updates()
 
 
 def cmd_add():
@@ -237,7 +260,7 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
     
-    parser.add_argument('--version', action='version', version='%(prog)s 1.0.0')
+    parser.add_argument('--version', action='version', version=f'%(prog)s {VERSION}')
     
     subparsers = parser.add_subparsers(dest='command', help='Commands')
     
