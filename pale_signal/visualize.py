@@ -129,3 +129,91 @@ def plot_metric(entries: List[Dict], metric: str, show: bool = True):
     plt.close()
     
     return filename
+
+
+def generate_ascii_plot(entries: List[Dict], metric: str, width: int = 60, height: int = 15):
+    """
+    Generate a simple ASCII plot for terminal display.
+    
+    Args:
+        entries: List of data entries (sorted newest first)
+        metric: Name of the metric to plot
+        width: Width of the plot in characters
+        height: Height of the plot in lines
+    """
+    if not entries or metric not in METRIC_CONFIG:
+        return ""
+    
+    # Reverse to show oldest to newest
+    entries = list(reversed(entries))
+    
+    # Extract values
+    if metric == "social":
+        social_map = {"none": 0, "online": 1, "casual": 2, "meaningful": 3, "deep": 4}
+        values = [social_map.get(entry[metric], 0) for entry in entries]
+    else:
+        values = [entry[metric] for entry in entries]
+    
+    if not values:
+        return ""
+    
+    # Normalize values to fit in height
+    min_val = min(values)
+    max_val = max(values)
+    val_range = max_val - min_val if max_val != min_val else 1
+    
+    # Create plot grid
+    plot = [[' ' for _ in range(width)] for _ in range(height)]
+    
+    # Plot points
+    for i, val in enumerate(values):
+        x = int((i / (len(values) - 1)) * (width - 1)) if len(values) > 1 else width // 2
+        y = height - 1 - int(((val - min_val) / val_range) * (height - 1))
+        y = max(0, min(height - 1, y))
+        plot[y][x] = '●'
+        
+        # Connect with lines
+        if i > 0:
+            prev_val = values[i - 1]
+            prev_x = int(((i - 1) / (len(values) - 1)) * (width - 1)) if len(values) > 1 else width // 2
+            prev_y = height - 1 - int(((prev_val - min_val) / val_range) * (height - 1))
+            prev_y = max(0, min(height - 1, prev_y))
+            
+            # Simple line drawing
+            if prev_x < x:
+                for px in range(prev_x + 1, x):
+                    py = prev_y + int((y - prev_y) * (px - prev_x) / (x - prev_x))
+                    if 0 <= py < height:
+                        plot[py][px] = '─'
+    
+    # Build output
+    output = []
+    output.append(f"\n{METRIC_CONFIG[metric]['label']} (Last {len(entries)} days)")
+    output.append("┌" + "─" * width + "┐")
+    for row in plot:
+        output.append("│" + "".join(row) + "│")
+    output.append("└" + "─" * width + "┘")
+    output.append(f"  Min: {min_val:.1f}  Max: {max_val:.1f}  Avg: {sum(values)/len(values):.1f}")
+    
+    return "\n".join(output)
+
+
+def auto_open_file(filepath: str):
+    """
+    Automatically open a file with the default system application.
+    Cross-platform support for Windows, Mac, and Linux.
+    """
+    try:
+        import platform
+        import subprocess
+        
+        system = platform.system()
+        if system == 'Windows':
+            os.startfile(filepath)
+        elif system == 'Darwin':  # macOS
+            subprocess.run(['open', filepath], check=False)
+        else:  # Linux and others
+            subprocess.run(['xdg-open', filepath], check=False)
+    except Exception:
+        # Silently fail if auto-open doesn't work
+        pass

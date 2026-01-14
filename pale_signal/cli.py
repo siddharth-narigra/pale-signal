@@ -9,11 +9,34 @@ Usage:
 
 import argparse
 import sys
+import os
+import platform
 from datetime import datetime
 
 from . import data_store
 from . import analytics
 from . import visualize
+
+
+ASCII_BANNER = """
+╔═══════════════════════════════════════════════════════════╗
+║                                                           ║
+║   ██████╗  █████╗ ██╗     ███████╗    ███████╗██╗ ██████╗ ║
+║   ██╔══██╗██╔══██╗██║     ██╔════╝    ██╔════╝██║██╔════╝ ║
+║   ██████╔╝███████║██║     █████╗█████╗███████╗██║██║  ███╗║
+║   ██╔═══╝ ██╔══██║██║     ██╔══╝╚════╝╚════██║██║██║   ██║║
+║   ██║     ██║  ██║███████╗███████╗    ███████║██║╚██████╔╝║
+║   ╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝    ╚══════╝╚═╝ ╚═════╝ ║
+║                                                           ║
+║          Track daily signals. Build awareness.            ║
+║                                                           ║
+╚═══════════════════════════════════════════════════════════╝
+"""
+
+
+def show_banner():
+    """Display ASCII art banner."""
+    print(ASCII_BANNER)
 
 
 def cmd_add():
@@ -98,9 +121,18 @@ def cmd_summary(days: int):
     """Display summary statistics for the last N days."""
     entries = data_store.get_entries(days)
     
-    if not entries:
-        print("No data available.")
-        return
+    if not entries or len(entries) < 3:
+        print("\nInsufficient data for meaningful summary.")
+        print(f"You have {len(entries) if entries else 0} entries. At least 3 entries recommended.")
+        
+        response = input("\nWould you like to use dummy data for testing? (y/n): ").strip().lower()
+        if response == 'y':
+            from . import dummy_data
+            entries = dummy_data.generate_dummy_data(days)
+            print(f"\nUsing {len(entries)} days of dummy data for demonstration.\n")
+        else:
+            print("\nAdd more data with: pale-signal add")
+            return
     
     summary = analytics.generate_summary(entries, days)
     print("\n" + summary)
@@ -110,9 +142,18 @@ def cmd_plot(metric: str):
     """Plot a specific metric over time."""
     entries = data_store.get_entries()
     
-    if not entries:
-        print("No data available.")
-        return
+    if not entries or len(entries) < 3:
+        print("\nInsufficient data for plotting.")
+        print(f"You have {len(entries) if entries else 0} entries. At least 3 entries recommended.")
+        
+        response = input("\nWould you like to use dummy data for testing? (y/n): ").strip().lower()
+        if response == 'y':
+            from . import dummy_data
+            entries = dummy_data.generate_dummy_data(30)
+            print(f"\nUsing {len(entries)} days of dummy data for demonstration.\n")
+        else:
+            print("\nAdd more data with: pale-signal add")
+            return
     
     valid_metrics = ["sleep_hours", "focus", "mood", "work_hours", "social"]
     if metric not in valid_metrics:
@@ -120,8 +161,18 @@ def cmd_plot(metric: str):
         print(f"Valid metrics: {', '.join(valid_metrics)}")
         return
     
+    # Show ASCII plot in terminal
+    ascii_plot = visualize.generate_ascii_plot(entries, metric)
+    if ascii_plot:
+        print(ascii_plot)
+    
+    # Generate and save PNG plot
     filename = visualize.plot_metric(entries, metric)
-    print(f"\nPlot saved to: {filename}")
+    print(f"\nHigh-resolution plot saved to: {filename}")
+    
+    # Auto-open the plot
+    print("Opening plot...")
+    visualize.auto_open_file(filename)
 
 
 def main():
@@ -190,6 +241,11 @@ For more information, visit: https://github.com/siddharth-narigra/pale-signal
     
     args = parser.parse_args()
     
+    # Show banner for help or when no command given
+    if not args.command or args.command in ['add', 'summary', 'plot']:
+        if not args.command:
+            show_banner()
+    
     if args.command == 'add':
         cmd_add()
     elif args.command == 'summary':
@@ -197,6 +253,7 @@ For more information, visit: https://github.com/siddharth-narigra/pale-signal
     elif args.command == 'plot':
         cmd_plot(args.metric)
     else:
+        show_banner()
         parser.print_help()
         sys.exit(1)
 
