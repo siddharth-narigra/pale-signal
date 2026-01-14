@@ -120,39 +120,87 @@ def cmd_add():
 def cmd_summary(days: int):
     """Display summary statistics for the last N days."""
     entries = data_store.get_entries(days)
+    using_dummy = False
     
-    if not entries or len(entries) < 3:
-        print("\nInsufficient data for meaningful summary.")
-        print(f"You have {len(entries) if entries else 0} entries. At least 3 entries recommended.")
-        
-        response = input("\nWould you like to use dummy data for testing? (y/n): ").strip().lower()
+    if not entries:
+        # No data at all
+        print("\nNo data yet.")
+        response = input("Would you like to see a demo with sample data? (y/n): ").strip().lower()
         if response == 'y':
             from . import dummy_data
             entries = dummy_data.generate_dummy_data(days)
-            print(f"\nUsing {len(entries)} days of dummy data for demonstration.\n")
+            using_dummy = True
         else:
-            print("\nAdd more data with: pale-signal add")
+            print("\nStart tracking with: pale-signal add")
             return
+    
+    elif len(entries) < 3:
+        # Some data but limited
+        print(f"\nYou have {len(entries)} entries. 3+ recommended for meaningful stats.")
+        print("\nOptions:")
+        print("  1. View your data anyway")
+        print("  2. See demo with sample data")
+        print("  3. Add more data first")
+        
+        choice = input("\nChoose (1/2/3): ").strip()
+        if choice == '1':
+            pass  # Use their data
+        elif choice == '2':
+            from . import dummy_data
+            entries = dummy_data.generate_dummy_data(days)
+            using_dummy = True
+        else:
+            print("\nAdd data with: pale-signal add")
+            return
+    
+    if using_dummy:
+        print("\n" + "=" * 60)
+        print("  DEMO MODE - This is sample data, not your actual data")
+        print("=" * 60)
     
     summary = analytics.generate_summary(entries, days)
     print("\n" + summary)
+    
+    if using_dummy:
+        print("-" * 60)
+        print("This was demo data. Start tracking with: pale-signal add")
+        print("-" * 60)
 
 
 def cmd_plot(metric: str):
     """Plot a specific metric over time."""
     entries = data_store.get_entries()
+    using_dummy = False
     
-    if not entries or len(entries) < 3:
-        print("\nInsufficient data for plotting.")
-        print(f"You have {len(entries) if entries else 0} entries. At least 3 entries recommended.")
-        
-        response = input("\nWould you like to use dummy data for testing? (y/n): ").strip().lower()
+    if not entries:
+        # No data at all
+        print("\nNo data yet.")
+        response = input("Would you like to see a demo with sample data? (y/n): ").strip().lower()
         if response == 'y':
             from . import dummy_data
             entries = dummy_data.generate_dummy_data(30)
-            print(f"\nUsing {len(entries)} days of dummy data for demonstration.\n")
+            using_dummy = True
         else:
-            print("\nAdd more data with: pale-signal add")
+            print("\nStart tracking with: pale-signal add")
+            return
+    
+    elif len(entries) < 3:
+        # Some data but limited
+        print(f"\nYou have {len(entries)} entries. 3+ recommended for meaningful plots.")
+        print("\nOptions:")
+        print("  1. Plot your data anyway")
+        print("  2. See demo with sample data")
+        print("  3. Add more data first")
+        
+        choice = input("\nChoose (1/2/3): ").strip()
+        if choice == '1':
+            pass  # Use their data
+        elif choice == '2':
+            from . import dummy_data
+            entries = dummy_data.generate_dummy_data(30)
+            using_dummy = True
+        else:
+            print("\nAdd data with: pale-signal add")
             return
     
     valid_metrics = ["sleep_hours", "focus", "mood", "work_hours", "social"]
@@ -160,6 +208,11 @@ def cmd_plot(metric: str):
         print(f"ERROR: Invalid metric: {metric}")
         print(f"Valid metrics: {', '.join(valid_metrics)}")
         return
+    
+    if using_dummy:
+        print("\n" + "=" * 60)
+        print("  DEMO MODE - This is sample data, not your actual data")
+        print("=" * 60)
     
     # Show ASCII plot in terminal
     ascii_plot = visualize.generate_ascii_plot(entries, metric)
