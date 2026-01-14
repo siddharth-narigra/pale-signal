@@ -83,21 +83,53 @@ def cmd_add():
     entry = {"date": today, "timestamp": timestamp}
     
     try:
-        # Sleep hours
-        sleep = input("Sleep hours (0-24): ").strip()
-        entry["sleep_hours"] = float(sleep)
+        # Sleep hours - with retry
+        while True:
+            sleep = input("Sleep hours (0-24): ").strip()
+            try:
+                val = float(sleep)
+                if 0 <= val <= 24:
+                    entry["sleep_hours"] = val
+                    break
+                print("Please enter a number between 0 and 24.")
+            except ValueError:
+                print("Invalid input. Please enter a number.")
         
-        # Focus
-        focus = input("Focus (1-10): ").strip()
-        entry["focus"] = int(focus)
+        # Focus - with retry
+        while True:
+            focus = input("Focus (1-10): ").strip()
+            try:
+                val = int(focus)
+                if 1 <= val <= 10:
+                    entry["focus"] = val
+                    break
+                print("Please enter a number between 1 and 10.")
+            except ValueError:
+                print("Invalid input. Please enter a number.")
         
-        # Mood
-        mood = input("Mood (1-10): ").strip()
-        entry["mood"] = int(mood)
+        # Mood - with retry
+        while True:
+            mood = input("Mood (1-10): ").strip()
+            try:
+                val = int(mood)
+                if 1 <= val <= 10:
+                    entry["mood"] = val
+                    break
+                print("Please enter a number between 1 and 10.")
+            except ValueError:
+                print("Invalid input. Please enter a number.")
         
-        # Work hours
-        work = input("Work hours (0-24): ").strip()
-        entry["work_hours"] = float(work)
+        # Work hours - with retry
+        while True:
+            work = input("Work hours (0-24): ").strip()
+            try:
+                val = float(work)
+                if 0 <= val <= 24:
+                    entry["work_hours"] = val
+                    break
+                print("Please enter a number between 0 and 24.")
+            except ValueError:
+                print("Invalid input. Please enter a number.")
         
         # Social - with validation loop
         valid_social = ["none", "online", "casual", "meaningful", "deep"]
