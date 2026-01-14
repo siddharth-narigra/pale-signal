@@ -134,4 +134,4 @@ Everything stays local in `~/.pale-signal/`:
 
 ## License
 
-MIT
+[MIT](LICENSE)
