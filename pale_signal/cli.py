@@ -28,8 +28,8 @@ ASCII_BANNER = """
 ║   ██║     ██║  ██║███████╗███████╗    ███████║██║╚██████╔╝║
 ║   ╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝    ╚══════╝╚═╝ ╚═════╝ ║
 ║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
 ║          Track daily signals. Build awareness.            ║
-║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝
 """
 
@@ -178,66 +178,26 @@ def cmd_plot(metric: str):
 def main():
     """Main CLI entry point."""
     
-    epilog = """
-Examples:
-  pale-signal add                    Add today's data interactively
-  pale-signal summary                View last 30 days summary
-  pale-signal summary --days 7       View last 7 days summary
-  pale-signal plot sleep_hours       Generate sleep hours plot
-  pale-signal plot mood              Generate mood plot
-
-Data Location:
-  All data is stored in: ~/.pale-signal/
-  - data.json: Your daily entries
-  - output/: Generated plots
-
-For more information, visit: https://github.com/siddharth-narigra/pale-signal
-"""
-    
     parser = argparse.ArgumentParser(
         prog='pale-signal',
-        description='A lightweight, local-first CLI tool for tracking and analyzing daily life signals',
-        epilog=epilog,
+        description='Track daily signals. Build awareness.',
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
     
     parser.add_argument('--version', action='version', version='%(prog)s 1.0.0')
     
-    subparsers = parser.add_subparsers(dest='command', help='Available commands')
+    subparsers = parser.add_subparsers(dest='command', help='Commands')
     
     # Add command
-    add_parser = subparsers.add_parser(
-        'add',
-        help='Add today\'s data',
-        description='Interactively add daily signal data (sleep, focus, mood, work hours, social interaction)'
-    )
+    subparsers.add_parser('add', help='Add today\'s data')
     
     # Summary command
-    summary_parser = subparsers.add_parser(
-        'summary',
-        help='Display summary statistics',
-        description='Display statistical summary including averages, correlations, and flags'
-    )
-    summary_parser.add_argument(
-        '--days',
-        type=int,
-        default=30,
-        metavar='N',
-        help='Number of days to summarize (default: 30)'
-    )
+    summary_parser = subparsers.add_parser('summary', help='View statistics')
+    summary_parser.add_argument('--days', type=int, default=30, metavar='N', help='Days to show (default: 30)')
     
     # Plot command
-    plot_parser = subparsers.add_parser(
-        'plot',
-        help='Plot a metric over time',
-        description='Generate a time series plot for a specific metric with rolling averages'
-    )
-    plot_parser.add_argument(
-        'metric',
-        type=str,
-        choices=['sleep_hours', 'focus', 'mood', 'work_hours', 'social'],
-        help='Metric to plot (sleep_hours, focus, mood, work_hours, social)'
-    )
+    plot_parser = subparsers.add_parser('plot', help='Generate plot')
+    plot_parser.add_argument('metric', choices=['sleep_hours', 'focus', 'mood', 'work_hours', 'social'])
     
     args = parser.parse_args()
     
@@ -248,10 +208,17 @@ For more information, visit: https://github.com/siddharth-narigra/pale-signal
     elif args.command == 'plot':
         cmd_plot(args.metric)
     else:
-        # Show banner only when no command given
+        # Show banner + quick reference (not full help)
         show_banner()
-        parser.print_help()
-        sys.exit(1)
+        print("Commands:")
+        print("  pale-signal add              Log today's data")
+        print("  pale-signal summary          View your stats")
+        print("  pale-signal plot <metric>    Generate a plot")
+        print("")
+        print("Metrics: sleep_hours, focus, mood, work_hours, social")
+        print("")
+        print("Run 'pale-signal -h' for more options.")
+        sys.exit(0)
 
 
 if __name__ == '__main__':
