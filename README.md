@@ -4,6 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![View on PyPI](https://img.shields.io/badge/View%20on-PyPI-blue.svg)](https://pypi.org/project/pale-signal/)
+[![View on GitHub](https://img.shields.io/badge/View%20on-GitHub-green.svg)](https://github.com/siddharth-narigra/pale-signal)
 
 A CLI tool for tracking daily life signals. All data stays locally on your machine.
 
