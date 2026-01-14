@@ -1,0 +1,81 @@
+# pale-signal
+
+A local-first CLI tool for tracking daily life signals. No cloud, no accounts, just data.
+
+## Installation
+
+```bash
+pip install pale-signal
+```
+
+## Usage
+
+```bash
+# Add today's data
+pale-signal add
+
+# View statistics
+pale-signal summary
+pale-signal summary --days 7
+
+# Generate plots
+pale-signal plot sleep_hours
+pale-signal plot mood
+```
+
+## What It Tracks
+
+- **sleep_hours** (0-24)
+- **focus** (1-10)
+- **mood** (1-10)
+- **work_hours** (0-24)
+- **social** (none, online, casual, meaningful, deep)
+
+## What It Does
+
+- Calculates averages and rolling averages
+- Computes correlations between metrics
+- Identifies threshold-based flags
+- Generates time series plots
+
+## What It Doesn't Do
+
+- No predictions
+- No recommendations
+- No cloud sync
+- No machine learning
+- No habit tracking
+- No productivity advice
+
+## Data Storage
+
+All data stored locally in `~/.pale-signal/`:
+- `data.json` - Your entries
+- `output/` - Generated plots
+
+## Philosophy
+
+Daily internal states feel chaotic and subjective. This tool converts them into structured data and visible trends.
+
+**Goal: Awareness through evidence, not prediction.**
+
+## Requirements
+
+- Python 3.8+
+- matplotlib
+
+## License
+
+MIT
+
+## Constraints
+
+- Python only
+- CLI only
+- JSON storage
+- No external databases
+- No frameworks
+- No ML libraries
+- Code must remain readable
+
+If a feature does not directly improve signal clarity, it does not belong.

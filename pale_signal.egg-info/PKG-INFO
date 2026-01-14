@@ -1,0 +1,174 @@
+Metadata-Version: 2.4
+Name: pale-signal
+Version: 1.0.0
+Summary: A lightweight, local-first CLI tool for tracking and analyzing daily life signals
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: matplotlib>=3.8.0
+
+# pale-signal
+
+A lightweight, local-first Python tool for tracking and analyzing daily life signals using simple data and honest statistics.
+
+## What this project IS
+
+✅ A CLI-based Python project  
+✅ Designed for one user (me)  
+✅ Local-only: no cloud, no accounts, no syncing  
+✅ Focused on daily quantitative signals, not journaling  
+✅ Built to be usable in one afternoon, not "perfect"  
+✅ A project to refine Python fundamentals, not showcase ML  
+✅ A tool that outputs clear patterns, not motivational advice  
+
+## What this project IS NOT
+
+❌ Not a mental health app  
+❌ Not a habit tracker  
+❌ Not a productivity dashboard  
+❌ Not a machine learning system  
+❌ Not a web app or GUI  
+❌ Not designed for multiple users  
+❌ Not a data science demo or Kaggle-style analysis  
+❌ Not an excuse to over-engineer  
+
+**If a feature does not directly improve signal clarity, it does not belong.**
+
+---
+
+## Installation
+
+```bash
+# Clone or download this repository
+cd pale-signal
+
+# Activate virtual environment
+.\venv\Scripts\activate  # Windows
+source venv/bin/activate  # macOS/Linux
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+---
+
+## Usage
+
+### Add today's data
+```bash
+python pale_signal.py add
+```
+
+Interactive prompt collects:
+- Sleep hours (0-24)
+- Focus (1-10)
+- Mood (1-10)
+- Work hours (0-24)
+- Social interaction (0=no, 1=yes)
+
+### View summary statistics
+```bash
+# Last 30 days (default)
+python pale_signal.py summary
+
+# Last 7 days
+python pale_signal.py summary --days 7
+```
+
+Displays:
+- Averages for all metrics
+- 7-day rolling averages
+- Top correlations between metrics
+- Threshold-based flags (low sleep, low focus, etc.)
+
+### Plot a metric
+```bash
+python pale_signal.py plot sleep_hours
+python pale_signal.py plot focus
+python pale_signal.py plot mood
+python pale_signal.py plot work_hours
+python pale_signal.py plot social
+```
+
+Generates a time series plot with:
+- Daily values
+- 7-day rolling average
+- Threshold reference lines
+- Saved to `output/` directory (auto-created)
+
+---
+
+## Data Schema
+
+All data is stored in `data.json` (gitignored for privacy):
+
+```json
+{
+  "entries": [
+    {
+      "date": "2026-01-14",
+      "sleep_hours": 7.5,
+      "focus": 8,
+      "mood": 7,
+      "work_hours": 6.0,
+      "social": 1
+    }
+  ]
+}
+```
+
+**Tracked Signals (Final & Fixed):**
+- `date` (YYYY-MM-DD)
+- `sleep_hours` (float, 0-24)
+- `focus` (int, 1-10)
+- `mood` (int, 1-10)
+- `work_hours` (float, 0-24)
+- `social` (int, 0 or 1)
+
+No additional signals unless one is removed.
+
+---
+
+## Philosophy
+
+Daily internal states feel chaotic and subjective.  
+This project converts them into structured data, simple statistics, and visible trends.
+
+**The goal is not prediction — the goal is awareness through evidence.**
+
+---
+
+## Constraints (Non-Negotiable)
+
+- Python only
+- Command-line interface only
+- JSON file storage
+- No external databases
+- No frameworks
+- No ML libraries
+- One command per execution
+- One plot per visualization
+- Code must remain readable in 3 months
+
+---
+
+## Definition of "Done"
+
+The project is considered complete when:
+
+✅ I can add daily data  
+✅ I can view trends  
+✅ The output gives at least one non-obvious insight  
+✅ The tool feels usable, not impressive  
+
+---
+
+## Privacy
+
+All personal data remains local. `data.json` is gitignored.  
+This repository may be made public later without data.
+
+---
+
+## License
+
+Personal project. Use at your own risk.

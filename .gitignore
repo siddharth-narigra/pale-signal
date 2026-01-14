@@ -1,0 +1,12 @@
+# Data files (privacy)
+data.json
+output/
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+venv/

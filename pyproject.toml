@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pale-signal"
+version = "1.0.0"
+description = "A lightweight, local-first CLI tool for tracking and analyzing daily life signals"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+dependencies = [
+    "matplotlib>=3.8.0",
+]
+
+[project.scripts]
+pale-signal = "pale_signal.cli:main"
+
+[tool.setuptools]
+packages = ["pale_signal"]

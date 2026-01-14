@@ -1,0 +1,2 @@
+[console_scripts]
+pale-signal = pale_signal.cli:main
