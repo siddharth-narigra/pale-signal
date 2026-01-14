@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pale-signal"
-version = "1.0.2"
+version = "1.0.3"
 description = "A lightweight, local-first CLI tool for tracking and analyzing daily life signals"
 readme = "README.md"
 requires-python = ">=3.8"

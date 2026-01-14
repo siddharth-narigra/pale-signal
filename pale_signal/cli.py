@@ -18,7 +18,7 @@ from . import analytics
 from . import visualize
 
 
-VERSION = "1.0.2"
+VERSION = "1.0.3"
 
 
 ASCII_BANNER = """
