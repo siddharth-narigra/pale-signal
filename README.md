@@ -3,6 +3,7 @@
 [![PyPI version](https://img.shields.io/pypi/v/pale-signal.svg)](https://pypi.org/project/pale-signal/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![View on PyPI](https://img.shields.io/badge/View%20on-PyPI-blue.svg)](https://pypi.org/project/pale-signal/)
 
 A CLI tool for tracking daily life signals. All data stays locally on your machine.
 
@@ -92,21 +93,14 @@ FLAGS:
 ```
 Mood (1-10) (Last 30 days)
 ┌────────────────────────────────────────────────────────────┐
-│    ●                         ●     ●   ●─●     ●       ●   │
-│     ─                                                      │
-│                                   ─                        │
-│   ─  ●   ●           ●        ─  ●                 ●    ─  │
-│                                                            │
-│                     ─           ─             ─            │
-│  ●    ─ ─          ●  ─     ─  ●                ─     ─  ─ │
-│           ─                         ─ ─   ─         ─      │
-│ ─                                                 ─        │
-│●       ●               ●                     ●            ●│
-│                   ─                                        │
-│                         ─                                  │
-│            ●               ●                ─    ●   ●     │
-│             ─             ─                                │
-│              ●─●─●       ●           ●     ●               │
+│                    ●                                       │
+│          ●        / \       ●                              │
+│         / \      /   \     / \             ●      ●        │
+│      ●-●   \    /     \   /   \           / \    /         │
+│     /       ●--●       \ /     ●         /   \  /          │
+│    /                    ●       \       /     ●-           │
+│   ●                              \     /                   │
+│                                   ●---●                    │
 └────────────────────────────────────────────────────────────┘
   Min: 4.0  Max: 9.0  Avg: 6.6
 
